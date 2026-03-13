@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useSubmit } from "react-router-dom";
 
-export default function TodoAdd(props) {
+export default function TodoAdd() {
     const [title, setTitle] = useState('');
     const [desc, setDesc] = useState('');
     const [image, setImage] = useState('');
+    const submit = useSubmit();
 
     const handleImageChange = (evt) => {
         const cFiles = evt.target.files;
@@ -18,12 +20,8 @@ export default function TodoAdd(props) {
     };
     const handleFormSubmit = (evt) => {
         evt.preventDefault();
-        const newDeep = { title, desc, image, done: false };
-        const date = new Date();
-        newDeep.createdAt = date.toLocaleString();
-        newDeep.key = date.getTime();
-        props.add(newDeep);
-        evt.target.reset();
+        submit({title, desc, image}, 
+               {action: '/add', method: 'post'});
     };
     const handleFormReset = () => {
         setTitle('');
